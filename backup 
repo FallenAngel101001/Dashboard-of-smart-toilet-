@@ -1,0 +1,233 @@
+
+import React, { useState, useEffect } from 'react';
+import { StyleSheet, Text, View, Image } from 'react-native';
+
+const App = () => {
+  const [currentTime, setCurrentTime] = useState(new Date());
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
+  const fetchData = async () => {
+    try {
+      const response = await fetch('https://data.weather.gov.hk/weatherAPI/opendata/weather.php?dataType=fnd&lang=en');
+      const json = await response.json();
+      setData(json);
+      setLoading(false);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  useEffect(() => {
+    const timer = setInterval(() => setCurrentTime(new Date()), 1000);
+    return () => clearInterval(timer);
+  }, []);
+
+
+
+
+
+
+  
+  return (
+    <View style={styles.container}>
+      <View>
+        <Text></Text>
+        <Image style={styles.image_weather} source={require('./image/weather.png')}  />
+        <Text style={styles.Time}>{currentTime.toLocaleTimeString().slice(0,7)}</Text>
+        {loading ? (
+          <Text>Loading data...</Text>
+        ) : (
+          <Text style={styles.week}>
+            {JSON.stringify(data['weatherForecast'][0]['week'])
+              .replace(/"Monday"/g, 'Mon')
+              .replace(/"Tuesday"/g, 'Tue')
+              .replace(/"Wednesday"/g, 'wed')
+              .replace(/"Thursday"/g, 'Thu')
+              .replace(/"Friday"/g, 'FRI')
+              .replace(/"Saturday"/g, 'FRI')
+              .replace(/"Sunday"/g, 'SUN')}
+          </Text>
+        )}
+        <Text style={styles.Data}>{currentTime.toLocaleDateString()}</Text>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Image source={require('./image/man.png')} style={styles.image_man} />
+        <Text></Text>
+        <Text style={styles.Text_grey}>           男</Text>
+        <Text style={styles.Text_grey}>         male</Text>
+      </View>
+
+
+      <View>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        {loading ? (
+          <Text>Loading data...</Text>
+        ) : (
+          <Text style={styles.Text_weather}> {data['soilTemp'][1]['value']}°C</Text>
+        )}
+        <Text style={styles.empty_3_t}></Text>
+        <Image source={require('./image/3.png')} style={styles.image_3}  />
+      </View>
+
+
+
+      <View>
+        <Text style={styles.empty_3}></Text>
+        <Image source={require('./image/left.png')} style={styles.Right}  />
+      </View>
+
+      <View>
+        <Text style={styles.empty}></Text>
+        <Text style={styles.Text_blue}>   可使用</Text>
+        <Text style={styles.Text_blue}>   Vacancy</Text>
+        <Text></Text>
+        <Text></Text>
+        <Text style={styles.Text_grey}>   洗手間</Text>
+        <Text style={styles.Text_grey}>   Toilet</Text>
+        <Text></Text>
+        <Text></Text>
+        <Text style={styles.Text_grey}>   沐浴間</Text>
+        <Text style={styles.Text_grey}>   Shower</Text>
+      </View>
+        
+
+
+      <View>
+        <Text></Text>
+        <Image source={require('./image/1.png')} style={styles.image_1} />
+        <Text  style={styles.empty_4_t}></Text>
+        
+        <Image source={require('./image/right.png')} style={styles.Right} />
+        
+      </View>  
+
+      <View>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Text></Text>
+        <Image source={require('./image/F.png')} style={styles.image_F} />
+        <Text style={styles.empty_4}></Text>
+        <Image source={require('./image/4.png')} style={styles.image_4} />
+      </View>
+
+    </View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 20,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  Time: {
+    width: 150,
+    color: '#888888', 
+    fontSize: 45,
+  },
+  week: {
+    width: 150,
+    color: '#888888', 
+    fontSize: 45,
+  },
+  Data:{
+    width: 150,
+    color: '#888888', 
+    fontSize: 20,
+  },
+  
+  image_weather: {
+    width: 150,
+    height: 150,
+  },
+  image_man: {
+    width: 150,
+    height: 150,
+    
+  },
+  image_3: {
+    width: 50,
+    height:100,
+  },
+  image_4: {
+    width: 50,
+    height: 100,
+  },
+  image_1: {
+    width: 50,
+    height: 158,
+  },
+  image_F: {
+    width: 100,
+    height: 100,
+  },
+  Text_left: {
+    width: 150,
+    color: '#888888',
+    fontSize: 30,
+  },
+  Text_grey: {
+    width: 100,
+    color: '#888888',
+    fontWeight: 'bold',
+    fontSize: 22,
+  },
+  Text_blue: {
+    width: 100,
+    color: '#22C3E6',
+    fontSize: 22,
+  },
+  Text_weather: {
+    width: 50,
+    color: '#22C3E6',
+    fontSize: 20,
+    textAlign: 'left',
+  },
+  Text_center: {
+    width: 300,
+    color: '#888888',
+    fontWeight: 'bold',
+    fontSize: 40,
+    textAlign: 'center',
+  },
+  Right:{
+    width: 50,
+    height: 50,
+  },
+  empty:{
+    width: 0,
+    height: 350,
+  },
+  empty_4:{
+    width: 0,
+    height: 340,
+  }, 
+  empty_3:{
+    width: 0,
+    height: 450,
+  },
+  empty_3_t:{
+    width: 0,
+    height: 280,
+  },
+  empty_4_t:{
+    width: 0,
+    height: 360,
+  },
+});
+
+export default App;

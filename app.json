@@ -1,0 +1,15 @@
+{
+  "expo": {
+    "name": "Virpluz_App",
+    "slug": "Virpluz_App",
+    "version": "1.0.0",
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "840d75cc-660c-404b-91c9-6188911b55ca"
+      }
+    }
+  }
+}
